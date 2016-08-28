@@ -4,7 +4,7 @@ var User = require('../models/User'),
   multer = require('multer'),
   storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads')
+      cb(null, '/dist/uploads')
     },
     filename: function (req, file, cb) {
       var tmpStr = file.originalname
