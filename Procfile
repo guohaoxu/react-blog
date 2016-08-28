@@ -1,1 +1,1 @@
-web:node ./blog/server.js
+web:node ./server.js
