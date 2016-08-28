@@ -32,7 +32,7 @@ export default class Setting extends Component {
         $("#hiddenImgSrc").val(`${that.props.user.username}${str}`)
       }, 1000)
     }
-    tagImg.src = `${window.ctx}/uploads/${this.state.user.username}${str}?t=${Math.random()}`
+    tagImg.src = `${window.ctx}/static/uploads/${this.state.user.username}${str}?t=${Math.random()}`
   }
   handleSetting(e) {
     e.preventDefault()
