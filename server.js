@@ -64,5 +64,5 @@ app.use('/static', express.static(path.join(__dirname, 'dist')))
 routes(app)
 
 app.listen(app.get('port'), function () {
-  console.log('Server is running on ' + app.set('port'))
+  console.log('Server is running on ' + app.get('port'))
 })
