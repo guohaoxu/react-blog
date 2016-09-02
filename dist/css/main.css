@@ -2,6 +2,9 @@ body {
   font-family: "microsoft yahei";
   background: #f4f4f4;
 }
+.hide {
+  display: none;
+}
 .main-content {
   min-height: 500px;
 }
@@ -43,6 +46,7 @@ body {
   vertical-align: middle;
 }
 .article-per .panel-footer a {
+  margin-right: 10px;
   color: #888;
 }
 .article-per .panel-footer a:hover {
@@ -150,7 +154,6 @@ footer {
   font-weight: normal;
 }
 #upTop {
-  display: none;
   position: fixed;
   z-index: 10;
   bottom: 20px;

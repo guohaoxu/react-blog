@@ -7,6 +7,7 @@ import 'babel-polyfill'
 import $ from 'jquery'
 import marked from 'marked'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 const API_URL = window.mainCtx || 'http://localhost:3000'
 const API_HEADERS = {
@@ -17,7 +18,7 @@ export default class BlogApp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: window.user,
+      user: window.user || {},
       articles: [],
       tags: []
     }
@@ -142,14 +143,7 @@ export default class BlogApp extends Component {
       <div>
         <Header nav={this.props.location.pathname} user={this.state.user} logout={this.logout.bind(this)} />
         <div className="container main-content">{propsChildren}</div>
-        <footer>
-          <div className="container">
-            <p>友情链接： <a href="https://www.github.com/" target="_blank">github</a> | <a href="https://nodejs.org/en/" target="_blank">Node.js</a> | <a href="https://www.npmjs.com/" target="_blank">npmjs</a></p>
-            <p>Copyright &copy; 2016 <a href="https://github.com/guohaoxu" target="_blank">@guohaoxu</a>.</p>
-          </div>
-        </footer>
-        <div id="tip-route" ref="tipRoute"><span></span>&nbsp;&nbsp;<a href="javascript:;" onClick={() => {$('#tip-route').fadeOut()}}>x</a></div>
-        <div id="upTop" className="btn btn-default"><span className="glyphicon glyphicon-menu-up"></span></div>
+        <Footer />
       </div>
     )
   }

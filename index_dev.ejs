@@ -11,8 +11,10 @@
   <meta name="author" content="guohaoxu, guohao0817@gmail.com">
   <meta http-equiv="Cache-Control" content="no-siteapp">
 
-  <link rel="stylesheet" href="//localhost:3000/static/stylesheets/all-9bbe1bcfc3.css">
-
+  <!-- build:css -->
+  <link rel="stylesheet" href="/dist/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/dist/css/main.css">
+  <!-- endbuild -->
 
   <script>
     // window.user = JSON.parse('<%- window_user %>');
@@ -25,8 +27,11 @@
   <div id="root"></div>
   <% if (process.env.NODE_ENV === 'production') { %>
 
-  <script src="//localhost:3000/static/javascripts/all-c02e29d753.js"></script>
-
+  <!-- build:js -->
+  <script src="/dist/js/bundle.js"></script>
+  <script src="/dist/js/jquery-1.12.1.min.js"></script>
+  <script src="/dist/bootstrap/js/bootstrap.min.js"></script>
+  <!-- endbuild -->
 
   <% } else { %>
   <script src="http://localhost:8080/static/js/bundle.js"></script>

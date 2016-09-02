@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
+import $ from 'jquery'
+import 'jquery-form'
 
 const API_URL = window.mainCtx || 'http://localhost:3000'
 const API_HEADERS = {

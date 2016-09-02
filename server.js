@@ -27,10 +27,10 @@ var express = require('express'),
 
   app = express()
 
-// mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise
 mongoose.connect(dbURL)
-  // .then(() => console.log('mongoose connection successful'))
-  // .catch((error) => console.error('error', error))
+  .then(() => console.log('mongoose connection successful'))
+  .catch((error) => console.error('error', error))
 
 app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname))
@@ -52,14 +52,17 @@ app.use(session({
   store: sessionStore
 }))
 app.use(compression())
-app.use(favicon(path.join(__dirname, 'dist/favicon.ico')))
+app.use(favicon(path.join(__dirname, 'build/favicon.ico')))
 
 if ('development' === app.get('env')) {
   app.use(logger('dev'))
   app.use(errorHandler())
 }
 
-app.use('/static', express.static(path.join(__dirname, 'dist')))
+app.use('/static', express.static(path.join(__dirname, 'build'), {
+  maxAge: 1000 * 60 * 60 * 24 * 30
+}))
+app.use('/dist', express.static(path.join(__dirname, 'dist')))
 
 routes(app)
 

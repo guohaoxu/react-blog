@@ -14,8 +14,6 @@ var User = require('../models/User'),
   }),
   upload = multer({ storage: storage })
 
-
-
 module.exports = function (app) {
   // api
   function checkLogin(req, res, next) {
