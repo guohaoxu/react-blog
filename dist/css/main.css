@@ -1,6 +1,14 @@
+html {
+  height: 100%;
+  background: url(/dist/images/bg.jpg) no-repeat center center;
+  background-size: cover;
+}
 body {
+  background: none !important;
   font-family: "microsoft yahei";
-  background: #f4f4f4;
+}
+.container table {
+  background: #eee;
 }
 .hide {
   display: none;
