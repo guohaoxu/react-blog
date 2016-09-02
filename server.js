@@ -27,10 +27,10 @@ var express = require('express'),
 
   app = express()
 
-mongoose.Promise = global.Promise
+// mongoose.Promise = global.Promise
 mongoose.connect(dbURL)
-  .then(() => console.log('mongoose connection successful'))
-  .catch((error) => console.error(error))
+  // .then(() => console.log('mongoose connection successful'))
+  // .catch((error) => console.error('error', error))
 
 app.set('port', process.env.PORT || 3000)
 app.set('views', path.join(__dirname))
