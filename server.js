@@ -59,12 +59,12 @@ if (app.get('env') === 'development') {
 }
 
 
-var temp = '', staticDir = ''
+var index = '', staticDir = ''
 if (app.get('env') === 'development') {
-  temp = 'index_dev'
+  index = './public/index.html'
   staticDir = 'public'
 } else {
-  temp = 'index'
+  index = './build/index.html'
   staticDir = 'build'
 }
 
@@ -76,15 +76,7 @@ app.use('/static', express.static(path.join(__dirname, staticDir), {
 routes(app)
 
 app.get('*', function (req, res) {
-  res.render(temp, {
-    window_user: req.session.user ? JSON.stringify({
-      username: req.session.user.username,
-      description: req.session.user.description,
-      tx: req.session.user.tx
-    }) : JSON.stringify({}),
-    mainCtx: process.env.mainDomain ? process.env.mainDomain : 'http://localhost:' + app.get('port'),
-    ctx: process.env.staticDomain ? process.env.staticDomain : 'http://localhost:' + app.get('port')
-  })
+  res.sendFile(path.join(__dirname, index))
 })
 
 app.listen(app.get('port'), function () {

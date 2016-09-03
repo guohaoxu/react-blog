@@ -69,6 +69,7 @@
     "gulp-eslint": "^3.0.1",
     "gulp-hash": "^3.1.0",
     "gulp-html-replace": "^1.6.1",
+    "gulp-htmlmin": "^2.0.0",
     "gulp-imagemin": "^3.0.3",
     "gulp-minify-html": "^1.0.6",
     "gulp-mocha": "^3.0.1",

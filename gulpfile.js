@@ -9,7 +9,7 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   revReplace = require('gulp-rev-replace'),
   revCollector = require('gulp-rev-collector'),
-  minifyHTML = require('gulp-minify-html'),
+  htmlmin = require('gulp-htmlmin'),
 
   mocha = require('gulp-mocha'),
   eslint = require('gulp-eslint'),
@@ -119,8 +119,7 @@ gulp.task('replace:js', ['build'], () => {
 
 // html replace hashed css js
 gulp.task('replace:html', ['build'], () => {
-  return gulp.src('./views/index_dev.ejs')
-    .pipe(rename('./index.ejs'))
+  return gulp.src('./public/index.html')
     .pipe(htmlreplace({
       'css': '/static/stylesheets/all.css',
       'js': '/static/javascripts/all.js'
@@ -140,7 +139,8 @@ gulp.task('replace:html', ['build'], () => {
         }
       }
     }))
-    .pipe(gulp.dest('./views'))
+    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(gulp.dest('./build'))
 })
 
 gulp.task('replace', ['replace:css', 'replace:js', 'replace:html'], () => {
