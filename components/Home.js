@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
+import { browserHistory } from 'react-router'
 import Article from './Article'
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
@@ -10,7 +11,7 @@ export default class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      articles: []
+      articles: localStorage.home ? JSON.parse(localStorage.home) : []
     }
   }
   fetchData() {
@@ -22,6 +23,7 @@ export default class Home extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       this.setState({articles: responseData.data})
+      localStorage.home = JSON.stringify(this.state.articles)
     })
     .catch((error) => {
       browserHistory.push('/error')

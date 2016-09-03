@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import Article from './Article'
 
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
@@ -49,6 +49,8 @@ export default class User extends Component {
     this.fetchData({username: this.props.params.username})
   }
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.user.username)
+    if (!nextProps.user.username) return
     this.fetchUser({username: nextProps.params.username})
     this.fetchData({username: nextProps.params.username})
   }
@@ -57,7 +59,7 @@ export default class User extends Component {
       <div>
         <div className="panel panel-default">
           <div className="panel-body clearfix">
-            <img src={`${window.ctx}/static/uploads/${this.state.user.tx}`} className="img-responsive img-rounded pull-left wid120 right20" />
+            <img src={`/static/uploads/${this.state.user.tx}`} className="img-responsive img-rounded pull-left wid120 right20" />
             <h2>{this.props.params.username}</h2>
             <p>{this.state.user.description}</p>
           </div>

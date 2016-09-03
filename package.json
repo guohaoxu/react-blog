@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "gulp & supervisor server.js",
+    "start": "supervisor server.js",
     "start:dev": "webpack-dev-server --hot --inline --progress --color",
     "start:prod": "gulp & forever server.js"
   },

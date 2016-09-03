@@ -9,7 +9,7 @@ import marked from 'marked'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
@@ -18,8 +18,8 @@ export default class BlogApp extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: window.user || {},
-      articles: [],
+      user: localStorage.user ? JSON.parse(localStorage.user) : {},
+      articles: localStorage.user ? JSON.parse(localStorage.user) : [],
       tags: []
     }
   }
@@ -43,7 +43,7 @@ export default class BlogApp extends Component {
         this.showTip(responseData.text)
       } else {
         this.setState({user: responseData.user})
-        console.log('---------reg')
+        localStorage.user = JSON.stringify(this.state.user)
         browserHistory.push(`/u/${responseData.user.username}`)
       }
     })
@@ -63,6 +63,7 @@ export default class BlogApp extends Component {
        this.showTip(responseData.text)
       } else {
         this.setState({user: {}})
+        localStorage.user = JSON.stringify(this.state.user)
         browserHistory.push('/')
       }
     })
@@ -83,6 +84,7 @@ export default class BlogApp extends Component {
        this.showTip(responseData.text)
       } else {
         this.setState({user: responseData.user})
+        localStorage.user = JSON.stringify(this.state.user)
         browserHistory.push(`/u/${responseData.user.username}`)
       }
     })

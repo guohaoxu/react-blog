@@ -58,15 +58,25 @@ if (app.get('env') === 'development') {
   app.use(errorHandler())
 }
 
-app.use(favicon(path.join(__dirname, '/build/favicon.ico')))
-app.use('/static', express.static(path.join(__dirname, 'build'), {
+
+var temp = '', staticDir = ''
+if (app.get('env') === 'development') {
+  temp = 'index_dev'
+  staticDir = 'public'
+} else {
+  temp = 'index'
+  staticDir = 'build'
+}
+
+app.use(favicon(path.join(__dirname, staticDir, 'favicon.ico')))
+app.use('/static', express.static(path.join(__dirname, staticDir), {
   maxAge: 1000 * 60 * 60 * 24 * 30
 }))
 
 routes(app)
 
 app.get('*', function (req, res) {
-  res.render('index', {
+  res.render(temp, {
     window_user: req.session.user ? JSON.stringify({
       username: req.session.user.username,
       description: req.session.user.description,

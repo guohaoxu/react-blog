@@ -19,7 +19,7 @@ export default class Post extends Component {
   }
   render() {
     return (
-      <div className="col-sm-8 col-sm-offset-2">
+      <div className="col-sm-10 col-sm-offset-1 post-div">
         <form method="post" action="/api/post" onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label htmlFor="aTitle">标题:</label>
@@ -28,9 +28,9 @@ export default class Post extends Component {
           <div className="form-group">
             <label>标签:</label>
             <div className="clearfix">
-              <input type="text" ref="tag1" className="form-control my-inline-input wid140" placeholder="标签" />
-              <input type="text" ref="tag2" className="form-control my-inline-input wid140" placeholder="标签" />
-              <input type="text" ref="tag3" className="form-control my-inline-input wid140" placeholder="标签" />
+              <input type="text" ref="tag1" className="form-control my-inline-input wid140" placeholder="标签" />&nbsp;&nbsp;
+              <input type="text" ref="tag2" className="form-control my-inline-input wid140" placeholder="标签" />&nbsp;&nbsp;
+              <input type="text" ref="tag3" className="form-control my-inline-input wid140" placeholder="标签" />&nbsp;&nbsp;
             </div>
           </div>
           <div className="form-group">

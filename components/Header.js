@@ -53,7 +53,8 @@ export default class Header extends Component {
           </div>
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="nav navbar-nav">
-              <li className={this.props.nav === '/' ? 'active' : ''} ><Link to="/">首页</Link><img width='50' src='/static/images/0.jpg' /></li>
+              <li><a className="logo" href="https://github.com/guohaoxu/" target="_blank"><img width='50' src='/static/images/0.jpg' /></a></li>
+              <li className={this.props.nav === '/' ? 'active' : ''} ><Link to="/">首页</Link></li>
               <li className={this.props.nav === '/tags' ? 'active' : ''}><Link to="/tags">标签</Link></li>
             </ul>
             <form className="navbar-form navbar-left" action="/search" method="get" onSubmit={this.handleSearch.bind(this)}>

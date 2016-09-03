@@ -27197,7 +27197,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -27211,8 +27211,8 @@
 	    var _this = _possibleConstructorReturn(this, (BlogApp.__proto__ || Object.getPrototypeOf(BlogApp)).call(this, props));
 
 	    _this.state = {
-	      user: window.user || {},
-	      articles: [],
+	      user: localStorage.user ? JSON.parse(localStorage.user) : {},
+	      articles: localStorage.user ? JSON.parse(localStorage.user) : [],
 	      tags: []
 	    };
 	    return _this;
@@ -27244,7 +27244,7 @@
 	          _this2.showTip(responseData.text);
 	        } else {
 	          _this2.setState({ user: responseData.user });
-	          console.log('---------reg');
+	          localStorage.user = JSON.stringify(_this2.state.user);
 	          _reactRouter.browserHistory.push('/u/' + responseData.user.username);
 	        }
 	      }).catch(function (error) {
@@ -27267,6 +27267,7 @@
 	          _this3.showTip(responseData.text);
 	        } else {
 	          _this3.setState({ user: {} });
+	          localStorage.user = JSON.stringify(_this3.state.user);
 	          _reactRouter.browserHistory.push('/');
 	        }
 	      }).catch(function (error) {
@@ -27290,6 +27291,7 @@
 	          _this4.showTip(responseData.text);
 	        } else {
 	          _this4.setState({ user: responseData.user });
+	          localStorage.user = JSON.stringify(_this4.state.user);
 	          _reactRouter.browserHistory.push('/u/' + responseData.user.username);
 	        }
 	      }).catch(function (error) {
@@ -47426,13 +47428,21 @@
 	              { className: 'nav navbar-nav' },
 	              _react2.default.createElement(
 	                'li',
+	                null,
+	                _react2.default.createElement(
+	                  'a',
+	                  { className: 'logo', href: 'https://github.com/guohaoxu/', target: '_blank' },
+	                  _react2.default.createElement('img', { width: '50', src: '/static/images/0.jpg' })
+	                )
+	              ),
+	              _react2.default.createElement(
+	                'li',
 	                { className: this.props.nav === '/' ? 'active' : '' },
 	                _react2.default.createElement(
 	                  _reactRouter.Link,
 	                  { to: '/' },
 	                  '首页'
-	                ),
-	                _react2.default.createElement('img', { width: '50', src: '/static/images/0.jpg' })
+	                )
 	              ),
 	              _react2.default.createElement(
 	                'li',
@@ -47630,6 +47640,8 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(173);
+
 	var _Article = __webpack_require__(542);
 
 	var _Article2 = _interopRequireDefault(_Article);
@@ -47642,7 +47654,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -47656,7 +47668,7 @@
 	    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
 
 	    _this.state = {
-	      articles: []
+	      articles: localStorage.home ? JSON.parse(localStorage.home) : []
 	    };
 	    return _this;
 	  }
@@ -47674,8 +47686,9 @@
 	        return response.json();
 	      }).then(function (responseData) {
 	        _this2.setState({ articles: responseData.data });
+	        localStorage.home = JSON.stringify(_this2.state.articles);
 	      }).catch(function (error) {
-	        browserHistory.push('/error');
+	        _reactRouter.browserHistory.push('/error');
 	      });
 	    }
 	  }, {
@@ -47781,7 +47794,7 @@
 	          _react2.default.createElement(
 	            _reactRouter.Link,
 	            { to: '/u/' + this.props.article.author },
-	            _react2.default.createElement('img', { src: window.ctx + '/static/uploads/' + this.props.article.tx, alt: '#', title: '' + this.props.article.author, className: 'img-responsive' })
+	            _react2.default.createElement('img', { src: '/static/uploads/' + this.props.article.tx, alt: '#', title: '' + this.props.article.author, className: 'img-responsive' })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -48183,7 +48196,7 @@
 
 	var formatter = (0, _buildFormatter2.default)(_zhCN2.default);
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -48455,7 +48468,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -48630,7 +48643,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -48644,7 +48657,7 @@
 	    var _this = _possibleConstructorReturn(this, (Tags.__proto__ || Object.getPrototypeOf(Tags)).call(this, props));
 
 	    _this.state = {
-	      tags: []
+	      tags: localStorage.tags ? JSON.parse(localStorage.tags) : []
 	    };
 	    return _this;
 	  }
@@ -48662,6 +48675,7 @@
 	        return response.json();
 	      }).then(function (responseData) {
 	        _this2.setState({ tags: responseData.data });
+	        localStorage.tags = JSON.stringify(_this2.state.tags);
 	      }).catch(function (error) {
 	        _reactRouter.browserHistory.push('/error');
 	      });
@@ -48786,7 +48800,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -48891,7 +48905,7 @@
 
 	var formatter = (0, _buildFormatter2.default)(_zhCN2.default);
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -49026,7 +49040,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -49089,6 +49103,8 @@
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      console.log(nextProps.user.username);
+	      if (!nextProps.user.username) return;
 	      this.fetchUser({ username: nextProps.params.username });
 	      this.fetchData({ username: nextProps.params.username });
 	    }
@@ -49104,7 +49120,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'panel-body clearfix' },
-	            _react2.default.createElement('img', { src: window.ctx + '/static/uploads/' + this.state.user.tx, className: 'img-responsive img-rounded pull-left wid120 right20' }),
+	            _react2.default.createElement('img', { src: '/static/uploads/' + this.state.user.tx, className: 'img-responsive img-rounded pull-left wid120 right20' }),
 	            _react2.default.createElement(
 	              'h2',
 	              null,
@@ -49193,7 +49209,7 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'col-sm-8 col-sm-offset-2' },
+	        { className: 'col-sm-10 col-sm-offset-1 post-div' },
 	        _react2.default.createElement(
 	          'form',
 	          { method: 'post', action: '/api/post', onSubmit: this.handleSubmit.bind(this) },
@@ -49219,8 +49235,11 @@
 	              'div',
 	              { className: 'clearfix' },
 	              _react2.default.createElement('input', { type: 'text', ref: 'tag1', className: 'form-control my-inline-input wid140', placeholder: '标签' }),
+	              '  ',
 	              _react2.default.createElement('input', { type: 'text', ref: 'tag2', className: 'form-control my-inline-input wid140', placeholder: '标签' }),
-	              _react2.default.createElement('input', { type: 'text', ref: 'tag3', className: 'form-control my-inline-input wid140', placeholder: '标签' })
+	              '  ',
+	              _react2.default.createElement('input', { type: 'text', ref: 'tag3', className: 'form-control my-inline-input wid140', placeholder: '标签' }),
+	              '  '
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -49284,7 +49303,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var API_URL = window.mainCtx || 'http://localhost:3000';
+	var API_URL = '';
 	var API_HEADERS = {
 	  'Content-Type': 'application/json'
 	};
@@ -49322,11 +49341,11 @@
 	      tagImg.onload = function () {
 	        setTimeout(function () {
 	          (0, _jquery2.default)("#upTip").hide();
-	          (0, _jquery2.default)(".img-rounded").attr("src", window.ctx + '/static/uploads/' + that.state.user.username + str + '?t=' + Math.random());
+	          (0, _jquery2.default)(".img-rounded").attr("src", '/static/uploads/' + that.state.user.username + str + '?t=' + Math.random());
 	          (0, _jquery2.default)("#hiddenImgSrc").val('' + that.props.user.username + str);
 	        }, 1000);
 	      };
-	      tagImg.src = window.ctx + '/static/uploads/' + this.state.user.username + str + '?t=' + Math.random();
+	      tagImg.src = '/static/uploads/' + this.state.user.username + str + '?t=' + Math.random();
 	    }
 	  }, {
 	    key: 'handleSetting',
@@ -49347,7 +49366,7 @@
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-sm-6 col-sm-offset-3' },
+	          { className: 'col-sm-10 col-sm-offset-1' },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'panel panel-default' },
@@ -49373,7 +49392,7 @@
 	                  _react2.default.createElement(
 	                    'div',
 	                    { className: 'imgTx' },
-	                    _react2.default.createElement('img', { src: window.ctx + '/static/uploads/' + this.state.user.tx, alt: '#', className: 'img-rounded' })
+	                    _react2.default.createElement('img', { src: '/static/uploads/' + this.state.user.tx, alt: '#', className: 'img-rounded' })
 	                  ),
 	                  _react2.default.createElement(
 	                    'label',
@@ -50775,7 +50794,7 @@
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-sm-6 col-sm-offset-3' },
+	          { className: 'col-sm-10 col-sm-offset-1' },
 	          _react2.default.createElement(
 	            'form',
 	            (_React$createElement = { method: 'post', action: '/api/reg' }, _defineProperty(_React$createElement, 'method', 'post'), _defineProperty(_React$createElement, 'onSubmit', this.handleReg.bind(this)), _React$createElement),
@@ -50911,7 +50930,7 @@
 	        { className: 'row' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'col-sm-6 col-sm-offset-3' },
+	          { className: 'col-sm-10 col-sm-offset-1' },
 	          _react2.default.createElement(
 	            'form',
 	            (_React$createElement = { method: 'post', action: '/api/login' }, _defineProperty(_React$createElement, 'method', 'post'), _defineProperty(_React$createElement, 'onSubmit', this.handleLogin.bind(this)), _React$createElement),

@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import $ from 'jquery'
 import 'jquery-form'
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
@@ -30,11 +30,11 @@ export default class Setting extends Component {
     tagImg.onload = function () {
       setTimeout(function () {
         $("#upTip").hide()
-        $(".img-rounded").attr("src", `${window.ctx}/static/uploads/${that.state.user.username}${str}?t=${Math.random()}`)
+        $(".img-rounded").attr("src", `/static/uploads/${that.state.user.username}${str}?t=${Math.random()}`)
         $("#hiddenImgSrc").val(`${that.props.user.username}${str}`)
       }, 1000)
     }
-    tagImg.src = `${window.ctx}/static/uploads/${this.state.user.username}${str}?t=${Math.random()}`
+    tagImg.src = `/static/uploads/${this.state.user.username}${str}?t=${Math.random()}`
   }
   handleSetting(e) {
     e.preventDefault()
@@ -48,14 +48,14 @@ export default class Setting extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-6 col-sm-offset-3">
+        <div className="col-sm-10 col-sm-offset-1">
           <div className="panel panel-default">
             <div className="panel-heading">设置</div>
             <div className="panel-body">
               <form ref="txForm" id="txForm" method="post" action="/api/upload" encType="multipart/form-data">
                 <div className="form-group">
                   <label htmlFor="userDesc">个人头像：</label>
-                  <div className="imgTx"><img src={`${window.ctx}/static/uploads/${this.state.user.tx}`} alt="#" className="img-rounded" /></div>
+                  <div className="imgTx"><img src={`/static/uploads/${this.state.user.tx}`} alt="#" className="img-rounded" /></div>
                   <label className="btn btn-default openFile">修改头像<input type="file" name="avatar" ref="txUpload" data-user="aaa" onChange={this.handleTx.bind(this)} /></label>
                   <div id="upTip"><span className="glyphicon glyphicon-refresh"></span> <span className="upTipTxt">uploading...</span></div>
                 </div>

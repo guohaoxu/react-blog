@@ -18,7 +18,7 @@ export default class Login extends Component {
   render() {
     return (
       <div className="row">
-        <div className="col-sm-6 col-sm-offset-3">
+        <div className="col-sm-10 col-sm-offset-1">
           <form method="post" action="/api/login" method="post" onSubmit={this.handleLogin.bind(this)}>
             <div className="panel panel-default">
               <div className="panel-heading">登录</div>

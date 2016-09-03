@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { browserHistory, Link } from 'react-router'
 import Article from './Article'
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
@@ -11,7 +11,7 @@ export default class Tags extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tags: []
+      tags: localStorage.tags ? JSON.parse(localStorage.tags) : []
     }
   }
   fetchData() {
@@ -23,6 +23,7 @@ export default class Tags extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       this.setState({tags: responseData.data})
+      localStorage.tags = JSON.stringify(this.state.tags)
     })
     .catch((error) => {
       browserHistory.push('/error')

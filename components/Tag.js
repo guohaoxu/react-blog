@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import Article from './Article'
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }

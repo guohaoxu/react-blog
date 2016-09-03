@@ -1,12 +1,21 @@
 html {
   height: 100%;
-  background: url(/static/images/bg.jpg) no-repeat center center;
+  background: url(/static/images/bg.jpg) no-repeat center bottom fixed #faf6ec;
   background-size: cover;
   font-size: 14px;
 }
 body {
   background: none !important;
   font-family: "microsoft yahei";
+}
+.logo {
+  padding: 0px !important;
+}
+.foxme {
+  position: fixed;
+  z-index: 100;
+  top: 0px;
+  right: 0px;
 }
 .container table {
   background: #eee;
@@ -157,6 +166,13 @@ textarea {
 }
 footer {
   margin-top: 40px;
+  color: #ddd;
+}
+footer a {
+  color: #ddd;
+}
+footer a:hover {
+  color: #fff;
 }
 .user-article {
   font-size: 14px;
@@ -200,4 +216,8 @@ footer {
 }
 .comments li:hover .comment-remove{
   display: inline;
+}
+.post-div {
+  background: #fff;
+  padding: 10px;
 }

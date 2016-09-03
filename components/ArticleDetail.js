@@ -7,7 +7,7 @@ import zhString from 'react-timeago/lib/language-strings/zh-CN'
 
 const formatter = buildFormatter(zhString)
 
-const API_URL = window.mainCtx || 'http://localhost:3000'
+const API_URL = ''
 const API_HEADERS = {
   'Content-Type': 'application/json'
 }
