@@ -356,16 +356,5 @@ module.exports = function (app) {
     })
   })
 
-  app.get('*', function (req, res) {
-    res.render('index', {
-      window_user: req.session.user ? JSON.stringify({
-        username: req.session.user.username,
-        description: req.session.user.description,
-        tx: req.session.user.tx
-      }) : JSON.stringify({}),
-      mainCtx: process.env.mainDomain ? process.env.mainDomain : 'http://localhost:' + app.get('port'),
-      ctx: process.env.staticDomain ? process.env.staticDomain : 'http://localhost:' + app.get('port')
-    })
-  })
 
 }

@@ -33,7 +33,7 @@ mongoose.connect(dbURL)
   .catch((error) => console.error('error', error))
 
 app.set('port', process.env.PORT || 3000)
-app.set('views', path.join(__dirname))
+app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
 app.use(methodOverride())
@@ -52,19 +52,30 @@ app.use(session({
   store: sessionStore
 }))
 app.use(compression())
-app.use(favicon(path.join(__dirname, 'build/favicon.ico')))
 
-if ('development' === app.get('env')) {
+if (app.get('env') === 'development') {
   app.use(logger('dev'))
   app.use(errorHandler())
 }
 
+app.use(favicon(path.join(__dirname, '/build/favicon.ico')))
 app.use('/static', express.static(path.join(__dirname, 'build'), {
   maxAge: 1000 * 60 * 60 * 24 * 30
 }))
-app.use('/dist', express.static(path.join(__dirname, 'dist')))
 
 routes(app)
+
+app.get('*', function (req, res) {
+  res.render('index', {
+    window_user: req.session.user ? JSON.stringify({
+      username: req.session.user.username,
+      description: req.session.user.description,
+      tx: req.session.user.tx
+    }) : JSON.stringify({}),
+    mainCtx: process.env.mainDomain ? process.env.mainDomain : 'http://localhost:' + app.get('port'),
+    ctx: process.env.staticDomain ? process.env.staticDomain : 'http://localhost:' + app.get('port')
+  })
+})
 
 app.listen(app.get('port'), function () {
   console.log('Server is running on ' + app.get('port'))

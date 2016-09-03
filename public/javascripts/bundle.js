@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "/static/js";
+/******/ 	__webpack_require__.p = "/static/javascripts";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -47431,7 +47431,8 @@
 	                  _reactRouter.Link,
 	                  { to: '/' },
 	                  '首页'
-	                )
+	                ),
+	                _react2.default.createElement('img', { width: '50', src: '/static/images/0.jpg' })
 	              ),
 	              _react2.default.createElement(
 	                'li',

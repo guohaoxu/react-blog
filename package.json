@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "supervisor server.js",
-    "start:prod": "webpack --progress --color & forever server.js"
+    "start": "gulp & supervisor server.js",
+    "start:dev": "webpack-dev-server --hot --inline --progress --color",
+    "start:prod": "gulp & forever server.js"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
     "gulp": "^3.9.1",
+    "gulp-add-src": "^0.2.0",
     "gulp-clean-css": "^2.0.12",
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^3.0.1",
@@ -82,6 +84,7 @@
     "redux-devtools": "^3.3.1",
     "superagent": "^2.2.0",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "webpack-stream": "^3.2.0"
   }
 }
