@@ -7,7 +7,7 @@ var UserSchema = new mongoose.Schema({
   email: String,
   tx: {
     type: String,
-    default: 'default.jpg'
+    default: 'static/uploads/default.jpg'
   }
 })
 

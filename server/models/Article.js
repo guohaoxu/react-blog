@@ -1,29 +1,35 @@
-var mongoose = require('mongoose')
+var mongoose = require('mongoose'),
+  ObjectId = mongoose.Schema.Types.ObjectId,
+  Mixed = mongoose.Schema.Types.Mixed
 
-var ArticleSchema = new mongoose.Schema({
-  author: String,
+var articleSchema = new mongoose.Schema({
+  author: { type: ObjectId, required: true },
   title: String,
-  tags: Array,
   content: String,
-  time: {
-    type: Date,
-    default: Date.now
-  },
+  tags: Array,
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now }
   comments: [],
-  pv: {
-    type: Number,
-    default: 0
-  }
+  pv: { type: Number, default: 0 }
 })
 
+articleSchema.pre('save', (next) => {
+  //
+  return next()
+})
+articleSchema.pre('remove', (next) => {
+  //
+  return next()
+})
 //Instance methods
-ArticleSchema.methods.speak = function () {
+articleSchema.methods.speak = () => {
   //console.log(this.sayer)
 }
 
 //Statics methods
-ArticleSchema.statics.getFive = function () {
+articleSchema.statics.getCountOfBooksById = (bookdId, cb) => {
   //
+  return cb(count)
 }
 
-module.exports = mongoose.model('Article', ArticleSchema)
+module.exports = mongoose.model('Article', articleSchema)
