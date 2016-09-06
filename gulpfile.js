@@ -74,7 +74,7 @@ gulp.task('build:css', () => {
 
 //build js
 gulp.task('build:js', ['webpack'], () => {
-  return gulp.src(['./public/javascripts/bundle.js', './public/javascripts/jquery-1.12.1.min.js', './public/bootstrap/js/bootstrap.min.js'])
+  return gulp.src(['./public/javascripts/bundle.js', './public/bootstrap/js/bootstrap.min.js'])
     .pipe(concat('all.js', {newLine: ';'}))
     .pipe(uglify())
     .pipe(hash())
