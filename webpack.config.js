@@ -5,7 +5,7 @@ module.exports = {
   ],
   output: {
     path: __dirname + '/public/javascripts',
-    publicPath: '/static/javascripts',
+    publicPath: '/public/javascripts', //webpack-dev-server bnudle path
     filename: 'bundle.js'
   },
   module: {

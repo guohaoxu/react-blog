@@ -10,15 +10,18 @@ var gulp = require('gulp'),
   revReplace = require('gulp-rev-replace'),
   revCollector = require('gulp-rev-collector'),
   htmlmin = require('gulp-htmlmin'),
-
+  clean = require('gulp-clean'),
   mocha = require('gulp-mocha'),
   eslint = require('gulp-eslint'),
   webpack = require('webpack-stream'),
-  addsrc = require('gulp-add-src')
+  addsrc = require('gulp-add-src'),
+  less = require('gulp-less'),
+  livereload = require('gulp-livereload'),
+  cache = require('gulp-cached')
 
 // code lint
 gulp.task('lint', () => {
-  return gulp.src(['**/*.js', '!node_modules/**', '!build/**', '!public/bootstrap/**'])
+  return gulp.src(['**/*.js', '!./node_modules/**', '!./build/**', '!./public/bootstrap/**'])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failAfterError())
@@ -30,8 +33,14 @@ gulp.task('test', ['lint'], () => {
     .pipe(mocha())
 })
 
+// clean build bir
+gulp.task('cleanBuild', () => {
+  return gulp.src('./build/*', {read: false})
+    .pipe(clean())
+})
+
 // copy  un-modify files
-gulp.task('copy', () => {
+gulp.task('copy', ['cleanBuild'], () => {
   // copy icon
   gulp.src('./public/favicon.ico')
     .pipe(gulp.dest('./build/'))
@@ -52,8 +61,9 @@ gulp.task('webpack', () => {
 })
 
 // build images
-gulp.task('build:images', () => {
+gulp.task('build:images', ['cleanBuild'], () => {
   return gulp.src('./public/images/*')
+    .pipe(cache('minimages'))
     .pipe(imagemin())
     .pipe(hash())
     .pipe(gulp.dest('./build/images/'))
@@ -62,7 +72,7 @@ gulp.task('build:images', () => {
 })
 
 //build css
-gulp.task('build:css', () => {
+gulp.task('build:css', ['cleanBuild'], () => {
   return gulp.src(['./public/bootstrap/css/bootstrap.min.css', './public/stylesheets/*.css'])
     .pipe(concat('all.css'))
     .pipe(cleanCSS())
@@ -73,7 +83,7 @@ gulp.task('build:css', () => {
 })
 
 //build js
-gulp.task('build:js', ['webpack'], () => {
+gulp.task('build:js', ['cleanBuild', 'webpack'], () => {
   return gulp.src(['./public/javascripts/bundle.js', './public/bootstrap/js/bootstrap.min.js'])
     .pipe(concat('all.js', {newLine: ';'}))
     .pipe(uglify())
@@ -148,5 +158,21 @@ gulp.task('replace', ['replace:css', 'replace:js', 'replace:html'], () => {
 })
 gulp.task('default', ['copy', 'replace'], () => {
   //
-  // gulp.watch(['**/*.js', '!node_modules/**', '!build/**', '!dist/bootstrap/**'], ['lint'])
+})
+
+// less
+gulp.task('less', () => {
+  return gulp.src('./public/stylesheets/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('./public/stylesheets/'))
+    .pipe(livereload())
+})
+
+gulp.task('watch', () => {
+  livereload.listen()
+  gulp.watch('./public/stylesheets/*.less', ['less'])
+
+  gulp.watch(['./public/**', '!./public/uploads/*'], (file) => {
+    livereload.changed(file.path)
+  })
 })
