@@ -7,7 +7,7 @@
     "test": "mocha",
     "start": "nodemon server.js",
     "start:dev": "webpack-dev-server --hot --inline --progress --color",
-    "start:prod": "pm2 start server.js"
+    "start:prod": "forever server.js"
   },
   "repository": {
     "type": "git",
