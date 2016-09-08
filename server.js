@@ -52,6 +52,7 @@ app.use(session({
   store: sessionStore
 }))
 app.use(compression())
+app.enable('trust proxy')
 
 if (app.get('env') === 'development') {
   app.use(logger('dev'))

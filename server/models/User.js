@@ -1,6 +1,6 @@
 var mongoose = require('mongoose')
 
-var UserSchema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
   username: String,
   password: String,
   description: String,
@@ -11,14 +11,23 @@ var UserSchema = new mongoose.Schema({
   }
 })
 
+userSchema.virtual('info')
+  .get(() => {
+    return {
+      username: this.username,
+      description: this.description,
+      tx: this.tx
+    }
+  })
+
 //Instance methods
-UserSchema.methods.speak = function () {
+userSchema.methods.speak = () => {
   //console.log(this.sayer)
 }
 
 //Statics methods
-UserSchema.statics.getFive = function () {
+userSchema.statics.getFive = () => {
   //
 }
 
-module.exports = mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', userSchema)

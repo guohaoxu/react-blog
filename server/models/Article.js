@@ -8,28 +8,13 @@ var articleSchema = new mongoose.Schema({
   content: String,
   tags: Array,
   created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now }
-  comments: [],
+  updated_at: { type: Date, default: Date.now },
+  comments: [{
+    username: String,
+    text: String,
+    created_at: { type: Date, default: Date.now }
+  }],
   pv: { type: Number, default: 0 }
 })
-
-articleSchema.pre('save', (next) => {
-  //
-  return next()
-})
-articleSchema.pre('remove', (next) => {
-  //
-  return next()
-})
-//Instance methods
-articleSchema.methods.speak = () => {
-  //console.log(this.sayer)
-}
-
-//Statics methods
-articleSchema.statics.getCountOfBooksById = (bookdId, cb) => {
-  //
-  return cb(count)
-}
 
 module.exports = mongoose.model('Article', articleSchema)
