@@ -11,6 +11,7 @@ module.exports = function () {
     User.findOne({ username: username }, function (err, user) {
       if (err) return done(err)
       if (!user) {
+        console.log('on local')
         return done(null, false, { message: "Incorrect username!"})
       }
       user.checkPassword(password, function (err, isMatch) {

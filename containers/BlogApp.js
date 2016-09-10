@@ -39,12 +39,14 @@ export default class BlogApp extends Component {
     .then(response => response.json())
     .then(responseData => {
       if (!responseData.success) {
-        this.showTip(responseData.text)
+        // this.showTip(responseData.text)
+        alert(responseData.text)
       } else {
         console.log(responseData)
         this.setState({user: responseData.data})
         // localStorage.user = JSON.stringify(this.state.user)
-        browserHistory.push(`/u/${responseData.data.username}`)
+        // browserHistory.push(`/u/${responseData.data.username}`)
+        browserHistory.push('/')
       }
     })
     .catch((error) => {
@@ -72,6 +74,7 @@ export default class BlogApp extends Component {
     })
   }
   login(reqBody) {
+    console.log('----------')
     fetch(`${API_URL}/login`, {
       method: 'post',
       headers: API_HEADERS,
@@ -80,13 +83,15 @@ export default class BlogApp extends Component {
     })
     .then(response => response.json())
     .then(responseData => {
+      console.log('-------s---')
       if (!responseData.success) {
-       this.showTip(responseData.text)
+      //  this.showTip(responseData.text)
+      alert(responseData.text)
       } else {
         this.setState({user: responseData.data})
-        console.log(responseData.data)
         // localStorage.user = JSON.stringify(this.state.user)
-        browserHistory.push(`/u/${responseData.data.username}`)
+        // browserHistory.push(`/u/${responseData.data.username}`)
+        browserHistory.push('/')
       }
     })
     .catch((error) => {
@@ -133,7 +138,6 @@ export default class BlogApp extends Component {
     })
   }
   componentDidMount() {
-    console.log('====')
     fetch(`${API_URL}/auth`, {
       method: 'get',
       headers: API_HEADERS,
@@ -142,7 +146,10 @@ export default class BlogApp extends Component {
     .then(response => response.json())
     .then(responseData => {
       this.setState({user: responseData.data})
-      browserHistory.push(`/u/${this.state.user.username}`)
+      if (this.state.user.username) {
+        // browserHistory.push(`/u/${this.state.user.username}`)
+        browserHistory.push('/')
+      }
     })
     .catch((error) => {
       browserHistory.push('/error')

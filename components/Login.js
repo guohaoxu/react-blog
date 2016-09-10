@@ -9,11 +9,20 @@ export default class Login extends Component {
   }
   handleLogin(e) {
     e.preventDefault()
-    var reqBody = {
-      username: this.refs.username.value.trim(),
-      password: this.refs.password.value.trim()
+    var username = this.refs.username.value.trim(),
+      password = this.refs.password.value.trim()
+    if (!username) {
+      this.refs.username.value = ''
+      return this.refs.username.focus()
     }
-    this.props.login(reqBody)
+    if (!password) {
+      this.refs.password.value = ''
+      return this.refs.password.focus()
+    }
+    this.props.login({
+      username: username,
+      password: password
+    })
   }
   openGithub(e) {
     e.preventDefault()
@@ -23,7 +32,7 @@ export default class Login extends Component {
     return (
       <div className="row">
         <div className="col-sm-10 col-sm-offset-1">
-          <form method="post" action="/api/login" method="post" onSubmit={this.handleLogin.bind(this)}>
+          <form method="post" action="" method="post" onSubmit={this.handleLogin.bind(this)}>
             <div className="panel panel-default">
               <div className="panel-heading">登录</div>
               <div className="panel-body">

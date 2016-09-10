@@ -58,11 +58,15 @@ router.post('/api/v1/signup', (req, res, next) => {
     })
     newUser.save((err, doc) => {
       if (err) return next(err)
-      res.json({
-        success: true,
-        data: doc
-      })
+      next()
     })
+  })
+}, passport.authenticate('local', {
+  failureRedirect: '/login'
+}), function (req, res) {
+  res.json({
+    success: true,
+    data: req.user
   })
 })
 
@@ -72,6 +76,7 @@ router.post('/api/v1/signup', (req, res, next) => {
 router.post('/api/v1/login', passport.authenticate('local', {
   failureRedirect: '/login'
 }), function (req, res) {
+  console.log('after login')
   res.json({
     success: true,
     data: req.user
@@ -92,6 +97,7 @@ router.get('/auth/github/callback', passport.authenticate('github', {
  *  页面初次加载或刷新页面时验证是否已经登录
  */
 router.get('/api/v1/auth', function (req, res) {
+  console.log(req.user)
   if (req.isAuthenticated()) {
     res.json({
       success: true,

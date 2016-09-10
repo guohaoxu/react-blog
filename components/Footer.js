@@ -12,7 +12,6 @@ export default class Footer extends Component {
     var that = this
     $(window).scroll(function(){
       if($(window).scrollTop() > 500){
-        console.log('---')
         that.setState({upShow: true})
       }else{
         that.setState({upShow: false})
