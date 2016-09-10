@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
   Mixed = mongoose.Schema.Types.Mixed
 
 var articleSchema = new mongoose.Schema({
-  author: { type: ObjectId, required: true },
+  author: { type: String, required: true },
   title: String,
   content: String,
   tags: Array,

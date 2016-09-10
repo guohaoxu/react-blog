@@ -11,10 +11,9 @@ export default class Reg extends Component {
     e.preventDefault()
     var reqBody = {
       username: this.refs.username.value.trim(),
-      password: this.refs.password.value.trim(),
-      password_re: this.refs.password_re.value.trim()
+      password: this.refs.password.value.trim()
     }
-    this.props.reg(reqBody)
+    this.props.signup(reqBody)
   }
   render() {
     return (

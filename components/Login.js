@@ -15,6 +15,10 @@ export default class Login extends Component {
     }
     this.props.login(reqBody)
   }
+  openGithub(e) {
+    e.preventDefault()
+    window.open('/auth/github', '_blank', 'toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=600, height=600, top=100, left=100')
+  }
   render() {
     return (
       <div className="row">
@@ -32,7 +36,10 @@ export default class Login extends Component {
                   <input type="password" ref="password" className="form-control" id="logPw" placeholder="密码" />
                 </div>
               </div>
-              <div className="panel-footer"><button type="submit" className="btn btn-default">登录</button></div>
+              <div className="panel-footer">
+                <button type="submit" className="btn btn-default">登录</button>&nbsp;&nbsp;
+                <a className="btn btn-default" href="/auth/github" onClick={this.openGithub.bind(this)}>使用github登录</a>
+              </div>
             </div>
           </form>
         </div>

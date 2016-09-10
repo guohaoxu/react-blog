@@ -37,7 +37,7 @@ export default class Header extends Component {
       navbarRight = (
         <ul className="nav navbar-nav navbar-right">
           <li className={this.props.nav === '/login' ? 'active' : ''}><Link to="/login">登 录</Link></li>
-          <li className={this.props.nav === '/reg' ? 'active' : ''}><Link to="/reg">注 册</Link></li>
+          <li className={this.props.nav === '/reg' ? 'active' : ''}><Link to="/signup">注 册</Link></li>
         </ul>
       )
     }

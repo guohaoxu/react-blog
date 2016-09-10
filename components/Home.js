@@ -1,21 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import Article from './Article'
+import constants from './constants'
 
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 export default class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      articles: localStorage.home ? JSON.parse(localStorage.home) : []
+      articles: []
     }
   }
   fetchData() {
-    fetch(`${API_URL}/api/articles`, {
+    fetch(`${API_URL}/articles`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'

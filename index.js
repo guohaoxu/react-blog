@@ -11,7 +11,7 @@ import Search from './components/Search'
 import User from './components/User'
 import Post from './components/Post'
 import Setting from './components/Setting'
-import Reg from './components/Reg'
+import Signup from './components/Signup'
 import Login from './components/Login'
 import NoMatch from './components/NoMatch'
 import Error from './components/Error'
@@ -27,7 +27,7 @@ render(
       <Route path='/search' component={Search} />
       <Route path='/u/:username' component={User} />
       <Route path='/post' component={Post} />
-      <Route path='/reg' component={Reg} />
+      <Route path='/signup' component={Signup} />
       <Route path='/login' component={Login} />
       <Route path='/setting' component={Setting} />
       <Route path='error' component={Error} />
