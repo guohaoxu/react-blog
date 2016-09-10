@@ -58,33 +58,39 @@ router.post('/api/v1/signup', (req, res, next) => {
     })
     newUser.save((err, doc) => {
       if (err) return next(err)
-      next()
+      req.login(doc, function (err) {
+        if (err) return next(err)
+        res.json({
+          success: true,
+          data: doc
+        })
+      })
     })
   })
-}, passport.authenticate('local', {
-  failureRedirect: '/login'
-}), function (req, res) {
-  res.json({
-    success: true,
-    data: req.user
-  })
 })
 
 /**
- *  登录login
+ *  local login
  */
-router.post('/api/v1/login', passport.authenticate('local', {
-  failureRedirect: '/login'
-}), function (req, res) {
-  console.log('after login')
-  res.json({
-    success: true,
-    data: req.user
-  })
+router.post('/api/v1/login', function(req, res, next) {
+  passport.authenticate('local', function(err, user, info) {
+    if (err) return next(err)
+    if (!user) return res.json({
+      success: false,
+      text: '用户名不存在或密码错误'
+    })
+    req.logIn(user, function(err) {
+      if (err) return next(err)
+      return res.json({
+        success: true,
+        data: req.user
+      })
+    })
+  })(req, res, next)
 })
 
 /**
- *  登录Github
+ *  Github login
  */
 router.get('/auth/github',  passport.authenticate('github'))
 router.get('/auth/github/callback', passport.authenticate('github', {
@@ -97,7 +103,6 @@ router.get('/auth/github/callback', passport.authenticate('github', {
  *  页面初次加载或刷新页面时验证是否已经登录
  */
 router.get('/api/v1/auth', function (req, res) {
-  console.log(req.user)
   if (req.isAuthenticated()) {
     res.json({
       success: true,
