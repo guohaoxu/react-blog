@@ -4,39 +4,12 @@ var express = require('express'),
   User = require('./models/User'),
   path = require('path'),
   Article = require('./models/Article'),
-  crypto = require('crypto'),
   multer = require('multer'),
-  storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/uploads')
-    },
-    filename: function (req, file, cb) {
-      var tmpStr = file.originalname
-      var str = tmpStr.slice(tmpStr.indexOf('.'), tmpStr.length)
-      cb(null, req.session.user.username + str)
-    }
-  }),
-  upload = multer({ storage: storage })
+  async = require('async')
 
 router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))
 })
-
-
-// router.use((req, res, next) => {
-//   res.locals.currentUser = req.user
-//   res.locals.errors = req.flash('error'),
-//   res.locals.infos = req.flash('info')
-// })
-
-// router.get('/', (req, res, next) => {
-//   User.find()
-//       .sort({ createdAt: 'descending' })
-//       .exec((err, users) => {
-//         if (err) return next(err)
-//         res.render('index', { users: users })
-//       })
-// })
 
 /**
  *  注册 signup
@@ -70,7 +43,7 @@ router.post('/api/v1/signup', (req, res, next) => {
 })
 
 /**
- *  local login
+ *  用户名密码 local login
  */
 router.post('/api/v1/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
@@ -99,7 +72,7 @@ router.get('/auth/github/callback', passport.authenticate('github', {
   res.send('<script>window.opener.location.reload();window.close();</script>')
 })
 
-/*
+/**
  *  页面初次加载或刷新页面时验证是否已经登录
  */
 router.get('/api/v1/auth', function (req, res) {
@@ -116,6 +89,9 @@ router.get('/api/v1/auth', function (req, res) {
   }
 })
 
+/**
+ *  验证是否已经登录中间件
+ */
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     next()
@@ -132,53 +108,101 @@ function isLoggedIn(req, res, next) {
  */
 router.get('/api/v1/logout', function (req, res) {
   req.logout()
-  res.redirect('/')
+  res.json({
+    success: true,
+    data: {}
+  })
+})
+
+/**
+ *  首页 获取文章数据
+ */
+router.get('/api/v1/articles', (req, res, next) => {
+  var p = req.query.p || 1
+  Article.find({}).skip(10 * (p - 1)).limit(5).sort({createdAt: -1}).exec((err, docs) => {
+    if (err) return next(err)
+    async.map(docs, function (item,callback) {
+      User.findOne({
+        username: item.author
+      }, function (err, doc) {
+        if (err) return callback(err)
+        var tmp = {
+          _id: item._id,
+          author: item.author,
+          title: item.title,
+          tags: item.tags,
+          content: item.content,
+          createdAt: item.createdAt,
+          comments: item.comments,
+          pv: item.pv,
+          tx: doc.tx
+        }
+        callback(null, tmp)
+        })
+    }, function (err, items) {
+      res.json({
+        success: true,
+        data: items
+      })
+    })
+  })
+})
+
+/**
+ *  获取标签页面数据 /tags
+ */
+router.get('/api/v1/tags', function (req, res) {
+  //tag: {tagName: '南京', count: 4, lastUser: 'aaa'}
+  Article.find({}).distinct('tags').exec((error, docs) => {
+    var results = docs.filter((tag) => tag) //过滤掉 tag为 ''的数据
+    async.map(results, function (item, callback) {
+      Article.find({ tags: item })
+        .sort({ createdAt: -1})
+        .exec(function (err, docs) {
+          if (err) return callback(err)
+          var tmp = {
+            tagName: item,
+            count: docs.length,
+            lastUser: docs[0].author,
+            lastDate: docs[0].createdAt
+          }
+          callback(null, tmp)
+        })
+    }, function (err, items) {
+      items.sort(function (a, b) {
+        return a.lastDate - b.lastDate
+      })
+      console.log(items)
+      res.json({
+        success: true,
+        data: items
+      })
+    })
+  })
 })
 
 
-
-
-// router.post('/api/v1/login', function (req, res) {
-//   var md5 = crypto.createHash('md5'),
-//     username = req.body.username,
-//     password = md5.update(req.body.password).digest('hex')
-//   User.findOne({
-//     username: username,
-//     password: password
-//   }, (error, r) => {
-//     if (!r) {
-//       return res.json({
-//         success: false,
-//         text: '用户名或者密码错误'
-//       })
-//     }
-//     req.session.user = r
-//     res.json({
-//       success: true,
-//       user: {
-//         username: r.username,
-//         description: r.description,
-//         tx: r.tx
-//       }
-//     })
-//   })
-// })
-
 /**
- *  logout退出
+ *  上传头像
  */
-// router.get('/api/v1/logout', checkLogin, function (req, res) {
-//   req.session.user = null
-//   return res.json({
-//     success: true
-//   })
-// })
-
-// old
-router.post('/api/v1/upload', checkLogin, upload.single('avatar'), function (req, res) {
+storage = multer.diskStorage({
+ destination: function (req, file, cb) {
+   cb(null, 'public/uploads')
+ },
+ filename: function (req, file, cb) {
+   var tmpStr = file.originalname
+   var str = tmpStr.slice(tmpStr.indexOf('.'), tmpStr.length)
+   cb(null, req.user.username + str)
+ }
+}),
+upload = multer({ storage: storage })
+router.post('/api/v1/upload', isLoggedIn, upload.single('avatar'), function (req, res) {
   res.end('ok')
 })
 
+/**
+ *  获取用户信息 /u/:username
+ */
 router.get('/api/v1/user', function (req, res) {
   User.findOne({
     username: req.query.username
@@ -190,11 +214,14 @@ router.get('/api/v1/user', function (req, res) {
   })
 })
 
-router.put('/api/v1/user', checkLogin, function (req, res) {
+/**
+ *  修改个人资料
+ */
+router.put('/api/v1/user', isLoggedIn, function (req, res) {
   var imgsrc = req.body.imgsrc || 'default.jpg',
     userdesc = req.body.userdesc
   User.findOneAndUpdate({
-    username: req.session.user.username
+    username: req.user.username
   }, {
     $set: {
       tx: imgsrc,
@@ -212,96 +239,71 @@ router.put('/api/v1/user', checkLogin, function (req, res) {
   })
 })
 
-router.get('/api/v1/articles', (req, res) => {
-  var p = req.query.p || 1,
-    username = req.query.username,
-    keyword = req.query.keyword,
-    tag = req.query.tag,
-    query
-  if (username !== undefined) {
-    query = {
-      author: username
-    }
-  } else if (keyword !== undefined){
-    var k_reg = new RegExp(keyword, 'i')
-    query = {
-      title: k_reg
-    }
-  } else if (tag !== undefined) {
-    query = {
-      tags: tag
-    }
-  } else {
-    query = {}
-  }
-  Article.find(query).skip(10 * (p - 1)).limit(10).sort({time: -1}).exec((error, r) => {
-    if (error) {
-      console.error(error)
-    } else {
-      var results = []
-      if (!r.length) {
-        return res.json({
-          success: true,
-          data: []
-        })
-      }
-      r.map((article) => {
-        User.findOne({
-          username: article.author
-        }, function (error, doc) {
-          results.push({
-            _id: article._id,
-            author: article.author,
-            title: article.title,
-            tags: article.tags,
-            content: article.content,
-            time: article.time,
-            comments: article.comments,
-            pv: article.pv,
-            tx: doc.tx
-          })
-          if (results.length === r.length) {
-            return res.json({
-              success: true,
-              data: results
-            })
-          }
-        })
-      })
-    }
-  })
-})
 
-router.get('/api/v1/tags', function (req, res) {
-  //tag: {tagName: '南京', count: 4, lastUser: 'aaa'}
-  var tags = []
-  Article.find({}).distinct('tags').exec((error, r) => {
-    var results = r.filter((tag) => tag)
-    if (!r.length) {
-      return res.json({
-        success: true,
-        data: []
-      })
-    }
-    results.map((tag) => {
-      var tmp = {}
-      tmp.tagName = tag
-      Article.find({
-        tags: tag
-      }).sort({time: -1}).exec((error, docs) => {
-        tmp.count = docs.length
-        tmp.lastUser = docs[0].author
-        tags.push(tmp)
-        if (tags.length === results.length) {
-          return res.json({
-            success: true,
-            data: tags
-          })
-        }
-      })
-    })
-  })
-})
+/**
+ *  搜索 /search?keyword=a
+ */
+// router.get('/api/v1/articles', (req, res) => {
+//   var p = req.query.p || 1,
+//     username = req.query.username,
+//     keyword = req.query.keyword,
+//     tag = req.query.tag,
+//     query
+//   if (username !== undefined) {
+//     query = {
+//       author: username
+//     }
+//   } else if (keyword !== undefined){
+//     var k_reg = new RegExp(keyword, 'i')
+//     query = {
+//       title: k_reg
+//     }
+//   } else if (tag !== undefined) {
+//     query = {
+//       tags: tag
+//     }
+//   } else {
+//     query = {}
+//   }
+//   Article.find(query).skip(10 * (p - 1)).limit(10).sort({time: -1}).exec((error, r) => {
+//     if (error) {
+//       console.error(error)
+//     } else {
+//       var results = []
+//       if (!r.length) {
+//         return res.json({
+//           success: true,
+//           data: []
+//         })
+//       }
+//       r.map((article) => {
+//         User.findOne({
+//           username: article.author
+//         }, function (error, doc) {
+//           results.push({
+//             _id: article._id,
+//             author: article.author,
+//             title: article.title,
+//             tags: article.tags,
+//             content: article.content,
+//             time: article.time,
+//             comments: article.comments,
+//             pv: article.pv,
+//             tx: doc.tx
+//           })
+//           if (results.length === r.length) {
+//             return res.json({
+//               success: true,
+//               data: results
+//             })
+//           }
+//         })
+//       })
+//     }
+//   })
+// })
+
+
 
 router.get('/api/v1/post', function (req, res) {
   var _id = req.query._id
@@ -333,12 +335,12 @@ router.get('/api/v1/post', function (req, res) {
   })
 })
 
-router.post('/api/v1/post', checkLogin, function (req, res) {
+router.post('/api/v1/post', isLoggedIn, function (req, res) {
   var title = req.body.title,
     tags = req.body.tags,
     content = req.body.content,
     newArticle = new Article({
-      author: req.session.user.username,
+      author: req.user.username,
       title: title,
       tags: tags,
       time: new Date(),
@@ -355,7 +357,7 @@ router.post('/api/v1/post', checkLogin, function (req, res) {
   })
 })
 
-router.put('/api/v1/post', checkLogin, function (req, res) {
+router.put('/api/v1/post', isLoggedIn, function (req, res) {
   var id = req.body._id,
     newContent = req.body.content
   Article.findOneAndUpdate({
@@ -371,7 +373,7 @@ router.put('/api/v1/post', checkLogin, function (req, res) {
   })
 })
 
-router.delete('/api/v1/post', checkLogin, function (req, res) {
+router.delete('/api/v1/post', isLoggedIn, function (req, res) {
   var _id = req.body._id
   Article.findOneAndRemove({
     _id: _id
@@ -414,25 +416,25 @@ router.post('/api/v1/postComment', function (req, res) {
 //   // res.sendFile(path.join(__dirname, index))
 // })
 
-function checkLogin(req, res, next) {
-  if (!req.session.user) {
-    return res.json({
-      success: false,
-      text: '未登录'
-    })
-  }
-  next()
-}
-
-function checkNotLogin(req, res, next) {
-  if (req.session.user) {
-    return res.json({
-      success: false,
-      text: '已登录'
-    })
-  }
-  next()
-}
+// function checkLogin(req, res, next) {
+//   if (!req.session.user) {
+//     return res.json({
+//       success: false,
+//       text: '未登录'
+//     })
+//   }
+//   next()
+// }
+//
+// function checkNotLogin(req, res, next) {
+//   if (req.session.user) {
+//     return res.json({
+//       success: false,
+//       text: '已登录'
+//     })
+//   }
+//   next()
+// }
 
 router.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'))

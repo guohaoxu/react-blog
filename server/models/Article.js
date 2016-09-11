@@ -7,12 +7,12 @@ var articleSchema = new mongoose.Schema({
   title: String,
   content: String,
   tags: Array,
-  created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
   comments: [{
     username: String,
     text: String,
-    created_at: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now }
   }],
   pv: { type: Number, default: 0 }
 })

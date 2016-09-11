@@ -1,21 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory, Link } from 'react-router'
 import Article from './Article'
+import constants from './constants'
 
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 export default class Tags extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tags: localStorage.tags ? JSON.parse(localStorage.tags) : []
+      tags: []
     }
   }
   fetchData() {
-    fetch(`${API_URL}/api/tags`, {
+    fetch(`${API_URL}/tags`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -23,10 +22,11 @@ export default class Tags extends Component {
     .then((response) => response.json())
     .then((responseData) => {
       this.setState({tags: responseData.data})
-      localStorage.tags = JSON.stringify(this.state.tags)
+      // localStorage.tags = JSON.stringify(this.state.tags)
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {

@@ -3,13 +3,12 @@ import { browserHistory, Link } from 'react-router'
 import Timeago from 'react-timeago'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import zhString from 'react-timeago/lib/language-strings/zh-CN'
+import constants from './constants'
+
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 const formatter = buildFormatter(zhString)
-
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
 
 export default class Search extends Component {
   constructor(props) {
@@ -19,7 +18,7 @@ export default class Search extends Component {
     }
   }
   fetchData(o) {
-    fetch(`${API_URL}/api/articles?keyword=${o.keyword}`, {
+    fetch(`${API_URL}/articles?keyword=${o.keyword}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -29,7 +28,8 @@ export default class Search extends Component {
       this.setState({articles: responseData.data})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {

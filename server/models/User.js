@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
-  bcrypt = require('bcryptjs'),
-  SALT_FACTOR = 10
+  bcrypt = require('bcryptjs')
 
 var userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -10,38 +9,27 @@ var userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   email: String,
   accessToken: String,
-  tx: { type: String, default: 'static/uploads/default.jpg' }
+  tx: { type: String, default: '/static/uploads/default.jpg' }
 })
-
-userSchema.methods.name = function () {
-  return this.displayName || this.username
-}
-
-var noop = () => {}
 
 userSchema.pre('save', function (next) {
   var user = this
   if (!user.isModified('password')) return next()
-  // bcrypt.genSalt(SALT_FACTOR, (err, salt) => {
-  //   if (err) return next(err)
-  //   bcrypt.hash(user.password, salt, noop, (err, hashedPassword) => {
-  //     if (err) return next(err)
-  //     user.password = hashedPassword
-  //     next()
-  //   })
-  // })
-  next()
+
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) return next(err)
+    bcrypt.hash(user.password, salt, (err, hashedPassword) => {
+      if (err) return next(err)
+      user.password = hashedPassword
+      next()
+    })
+  })
 })
 
 userSchema.methods.checkPassword = function (guess, done) {
-  // bcrypt.compare(guess, this.password, (err, isMatch) => {
-  //   done(err, isMatch)
-  // })
-  if (this.password == guess) {
-    done(null, true)
-  } else {
-    done(null, false)
-  }
+  bcrypt.compare(guess, this.password, (err, isMatch) => {
+    done(err, isMatch)
+  })
 }
 
 /**

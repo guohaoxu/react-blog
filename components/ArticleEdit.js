@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
+import constants from './constants'
 
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 export default class ArticleEdit extends Component {
   constructor(props) {
@@ -19,7 +18,7 @@ export default class ArticleEdit extends Component {
     }
   }
   fetchData(o) {
-    fetch(`${API_URL}/api/articles?_id=${o._id}`, {
+    fetch(`${API_URL}/articles?_id=${o._id}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -29,7 +28,8 @@ export default class ArticleEdit extends Component {
       this.setState({article: responseData.data[0]})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {
@@ -46,7 +46,7 @@ export default class ArticleEdit extends Component {
   }
   handleSubmit(e) {
     e.preventDefault()
-    fetch(`${API_URL}/api/post`, {
+    fetch(`${API_URL}/post`, {
       method: 'put',
       headers: API_HEADERS,
       credentials: 'include',
@@ -60,7 +60,8 @@ export default class ArticleEdit extends Component {
       browserHistory.push(`/articles/${this.state.article._id}`)
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   render() {

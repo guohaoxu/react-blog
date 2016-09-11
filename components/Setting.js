@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import $ from 'jquery'
 import 'jquery-form'
-
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+// import constants from './constants'
+//
+// const API_URL = constants.API_URL
+// const API_HEADERS = constants.API_HEADERS
 
 export default class Setting extends Component {
   constructor(props) {
@@ -55,7 +54,7 @@ export default class Setting extends Component {
               <form ref="txForm" id="txForm" method="post" action="/api/upload" encType="multipart/form-data">
                 <div className="form-group">
                   <label htmlFor="userDesc">个人头像：</label>
-                  <div className="imgTx"><img src={`/static/uploads/${this.state.user.tx}`} alt="#" className="img-rounded" /></div>
+                  <div className="imgTx"><img src={this.state.user.tx} alt="#" className="img-rounded" /></div>
                   <label className="btn btn-default openFile">修改头像<input type="file" name="avatar" ref="txUpload" data-user="aaa" onChange={this.handleTx.bind(this)} /></label>
                   <div id="upTip"><span className="glyphicon glyphicon-refresh"></span> <span className="upTipTxt">uploading...</span></div>
                 </div>

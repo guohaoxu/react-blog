@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import Article from './Article'
+import constants from './constants'
 
-
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 export default class User extends Component {
   constructor(props) {
@@ -17,7 +15,7 @@ export default class User extends Component {
     }
   }
   fetchUser(o) {
-    fetch(`${API_URL}/api/user?username=${o.username}`, {
+    fetch(`${API_URL}/user?username=${o.username}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -27,11 +25,12 @@ export default class User extends Component {
       this.setState({user: responseData.data})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   fetchData(o) {
-    fetch(`${API_URL}/api/articles?username=${o.username}`, {
+    fetch(`${API_URL}/articles?username=${o.username}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -41,7 +40,8 @@ export default class User extends Component {
       this.setState({articles: responseData.data})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {
@@ -59,7 +59,7 @@ export default class User extends Component {
       <div>
         <div className="panel panel-default">
           <div className="panel-body clearfix">
-            <img src={`/static/uploads/${this.state.user.tx}`} className="img-responsive img-rounded pull-left wid120 right20" />
+            <img src={this.state.user.tx} className="img-responsive img-rounded pull-left wid120 right20" />
             <h2>{this.props.params.username}</h2>
             <p>{this.state.user.description}</p>
           </div>

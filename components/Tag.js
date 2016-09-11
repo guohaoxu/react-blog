@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import { browserHistory } from 'react-router'
 import Article from './Article'
+import constants from './constants'
 
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
 
 export default class Tags extends Component {
   constructor(props) {
@@ -15,7 +14,7 @@ export default class Tags extends Component {
     }
   }
   fetchData(o) {
-    fetch(`${API_URL}/api/articles?tag=${o.tag}`, {
+    fetch(`${API_URL}/articles?tag=${o.tag}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -25,7 +24,8 @@ export default class Tags extends Component {
       this.setState({articles: responseData.data})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {

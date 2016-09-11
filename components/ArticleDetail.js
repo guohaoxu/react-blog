@@ -5,12 +5,12 @@ import Timeago from 'react-timeago'
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 import zhString from 'react-timeago/lib/language-strings/zh-CN'
 
-const formatter = buildFormatter(zhString)
+import constants from './constants'
 
-const API_URL = ''
-const API_HEADERS = {
-  'Content-Type': 'application/json'
-}
+const API_URL = constants.API_URL
+const API_HEADERS = constants.API_HEADERS
+
+const formatter = buildFormatter(zhString)
 
 export default class ArticleDetail extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ export default class ArticleDetail extends Component {
     }
   }
   fetchData(o) {
-    fetch(`${API_URL}/api/post?_id=${o._id}`, {
+    fetch(`${API_URL}/post?_id=${o._id}`, {
       method: 'get',
       headers: API_HEADERS,
       credentials: 'include'
@@ -31,14 +31,15 @@ export default class ArticleDetail extends Component {
       this.setState({article: responseData.data})
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {
     this.fetchData({_id: this.props.params._id})
   }
   handleRemove() {
-    fetch(`${API_URL}/api/post`, {
+    fetch(`${API_URL}/post`, {
       method: 'delete',
       headers: API_HEADERS,
       credentials: 'include',
@@ -51,7 +52,8 @@ export default class ArticleDetail extends Component {
       browserHistory.push(`/u/${this.props.user.username}`)
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   handleCommentUsername(e) {
@@ -82,7 +84,7 @@ export default class ArticleDetail extends Component {
       this.refs.content.focus()
       return false
     }
-    fetch(`${API_URL}/api/postComment`, {
+    fetch(`${API_URL}/postComment`, {
       method: 'post',
       headers: API_HEADERS,
       credentials: 'include',
@@ -99,7 +101,8 @@ export default class ArticleDetail extends Component {
       })
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   render() {

@@ -21,11 +21,14 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseData) => {
+      console.log(responseData.data)
       this.setState({articles: responseData.data})
-      localStorage.home = JSON.stringify(this.state.articles)
+      // console.log(this.state.articles)
+      // localStorage.home = JSON.stringify(this.state.articles)
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {

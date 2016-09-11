@@ -50,7 +50,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   logout() {
@@ -70,7 +71,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   login(reqBody) {
@@ -95,7 +97,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   post(reqBody) {
@@ -114,7 +117,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   updateUser(reqBody) {
@@ -134,7 +138,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   componentDidMount() {
@@ -152,7 +157,8 @@ export default class BlogApp extends Component {
       }
     })
     .catch((error) => {
-      browserHistory.push('/error')
+      console.log(error)
+      // browserHistory.push('/error')
     })
   }
   render() {
