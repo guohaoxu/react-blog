@@ -7,8 +7,9 @@ var express = require('express'),
   multer = require('multer'),
   async = require('async')
 
+var indexTmp = process.env.NODE_ENV == 'production' ? '../build/index.html' : '../public/index.html'
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'))
+  res.sendFile(path.join(__dirname, indexTmp))
 })
 
 /**

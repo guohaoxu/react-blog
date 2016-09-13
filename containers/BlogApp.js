@@ -93,7 +93,7 @@ export default class BlogApp extends Component {
         this.setState({user: responseData.data})
         // localStorage.user = JSON.stringify(this.state.user)
         // browserHistory.push(`/u/${responseData.data.username}`)
-        browserHistory.push('/')
+        browserHistory.push(`/u/${responseData.data.username}`)
       }
     })
     .catch((error) => {

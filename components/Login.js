@@ -3,8 +3,9 @@ import { browserHistory } from 'react-router'
 
 export default class Login extends Component {
   componentWillMount() {
+    console.log('...')
     if (this.props.user.username) {
-      browserHistory.push('/')
+      browserHistory.push(`/u/${this.props.user.username}`)
     }
   }
   handleLogin(e) {
